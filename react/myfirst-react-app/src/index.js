@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import ExampleReactBoostrap from './exampleractboostrap.js'
+
+import 'bootstrap/dist/css/bootstrap.css';
+
+import './miscss.css'
+
 const varia = "Perro";
 
 class Timer extends React.Component{
@@ -91,7 +97,7 @@ class TodoApp extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='container'>
       <h3>Tareas pendientes</h3>
       <TodoList items={this.state.items} />
       <form onSubmit={this.handleSubmit}>
@@ -103,10 +109,10 @@ class TodoApp extends React.Component {
           onChange={this.handleChange}
           value={this.state.text}
         />
-        <button>
+        <button className='btn btn-primary'>
           Añadir #{this.state.items.length + 1}
         </button>
-        </form>
+        </form> 
       </div>
 
     );
@@ -147,9 +153,15 @@ class TodoList extends React.Component {
 }
 
 ReactDOM.render(
-  <TodoApp />,
+  <ExampleReactBoostrap />,
   document.getElementById('root')
 );
+
+/*
+ReactDOM.render(
+  <TodoApp />,
+  document.getElementById('root')
+);*/
 
 
 /*
