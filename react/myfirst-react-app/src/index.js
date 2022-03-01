@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ExampleReactBoostrap from './exampleractboostrap.js'
+import ExampleReactBoostrap from './exampleractboostrap.js';
 
+import   ExampleNavegacion  from './examplenavegacion.js';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import './miscss.css'
+
 
 const varia = "Perro";
 
@@ -152,17 +154,21 @@ class TodoList extends React.Component {
   }
 }
 
-ReactDOM.render(
+/*ReactDOM.render(
   <ExampleReactBoostrap />,
   document.getElementById('root')
 );
 
-/*
 ReactDOM.render(
   <TodoApp />,
   document.getElementById('root')
 );*/
 
+ReactDOM.render(
+    <ExampleNavegacion />
+  ,
+  document.getElementById('root')
+);
 
 /*
 ReactDOM.render(
