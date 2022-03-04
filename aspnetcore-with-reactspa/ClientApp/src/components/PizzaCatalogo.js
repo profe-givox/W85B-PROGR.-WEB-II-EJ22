@@ -1,10 +1,13 @@
 import React, {Component} from "react";
-import {  Container, Table, Button } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
+import PizzaReg from './PizzaReg.js'
 
 export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
-        this.state = {data: []}
+        this.state = {data: [], modal: false , ide: 0};
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
      componentDidMount(){
@@ -25,13 +28,14 @@ export class PizzaCatalogo extends Component{
     handleClick  (e) {
         console.log('this is:', this);
         console.log('e:', e.target);
+        this.setState({modal: true, ide: 0});
     }
 
     render(){
         return (
             <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1 id="tabelLabel" >Catalogo de pizza</h1>
+                <p>Este componente demuestra el uso de Fetch para ir a la API server</p>
                 <Table hover>
                     <thead>
                         <tr>
@@ -42,7 +46,7 @@ export class PizzaCatalogo extends Component{
                             Pizza
                         </th>
                         <th>
-                            Salza
+                            Salsa
                         </th>
                         <th>
                             Action
@@ -56,8 +60,11 @@ export class PizzaCatalogo extends Component{
                                     <th scope="row">{pizza.id}</th>
                                     <td>{pizza.name}</td>
                                     <td>{pizza.sauce}</td>
-                                    <td><Button color="primary" onClick={(e)=>this.handleClick(e)} >
-                                            +
+                                    <td><Button color="primary" onClick={this.handleClick} >
+                                            Edit
+                                        </Button>
+                                        <Button color="primary" onClick={this.handleClick} >
+                                            X
                                         </Button>
                                     </td>
                                 </tr>
@@ -66,6 +73,7 @@ export class PizzaCatalogo extends Component{
                         
                     </tbody>
                     </Table>
+                    <PizzaReg modal={this.state.modal}  ide={this.state.ide} />
             </div>
         );
     }
