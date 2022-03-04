@@ -31,7 +31,7 @@ export class FetchData extends Component {
               <td>{forecast.temperatureF}</td>
               <td>{forecast.summary}</td>
             </tr>
-          )}
+          )}  
         </tbody>
       </table>
     );
