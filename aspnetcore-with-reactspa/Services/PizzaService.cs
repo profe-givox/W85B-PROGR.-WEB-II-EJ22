@@ -13,6 +13,22 @@ public class PizzaService
         _context = context;
     }
 
+    public IEnumerable<Topping> ToppingGetAll()
+    {
+       return _context.Toppings
+        .AsNoTracking()
+        .ToList();
+
+    }
+
+    public IEnumerable<Sauce> SauceGetAll()
+    {
+       return _context.Sauces
+        .AsNoTracking()
+        .ToList();
+
+    }
+
     public IEnumerable<Pizza> GetAll()
     {
        return _context.Pizzas
@@ -20,6 +36,8 @@ public class PizzaService
         .ToList();
 
     }
+
+
 
     public Pizza? GetById(int id)
     {

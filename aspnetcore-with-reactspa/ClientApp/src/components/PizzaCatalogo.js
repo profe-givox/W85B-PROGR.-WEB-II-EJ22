@@ -6,22 +6,51 @@ import { Container, Table, Button, Modal, ModalBody,
 export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
-        this.state = {data: [], modalUpdate: false };
+        this.state = {data: [],salsas:[], ingredientes: [],  modalUpdate: false };
 
         this.handleClick = this.handleClick.bind(this);
     }
 
      componentDidMount(){
+        const datos = {
+            pizzas: [],
+            salsas: [],
+            ingredientes: []
+        };
 
          fetch('pizza').then((response )=>{
               return response.json();   
          }).then(
              (dataApi) => {
+                datos.pizzas = dataApi;
+                return fetch('pizza/sauce');
+                /*
                 console.log(dataApi); 
                 
                 this.setState({data: dataApi}
                     );
+                */
                 }
+                
+               
+         ).then(
+             (response) => {
+                 return response.json();
+             }
+         ).then(
+             (dataSalsa) => {
+                 datos.salsas = dataSalsa;
+                 return fetch('pizza/topping');
+             }
+         ).then(
+             (response) => {return  response.json()}
+         ).then(
+             (dataTopping) => {
+                 datos.ingredientes = dataTopping;
+                 this.setState({data: datos.pizzas,
+                    salsas:datos.salsas, ingredientes: datos.ingredientes});
+                    console.log(this.state);
+             }
          );
         
     }

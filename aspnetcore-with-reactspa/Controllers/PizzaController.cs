@@ -15,6 +15,21 @@ public class PizzaController : ControllerBase
         _service = service;
     }
 
+    //localhost/pizza/sauce
+    [HttpGet("sauce")]
+    public IEnumerable<Sauce> SauceGetAll()
+    {
+        return _service.SauceGetAll();
+    }
+
+    //localhost/pizza/topping
+    [HttpGet]
+    [Route("topping")]
+    public IEnumerable<Topping> ToppingGetAll()
+    {
+        return _service.ToppingGetAll();
+    }
+
     [HttpGet]
     public IEnumerable<Pizza> GetAll()
     {
