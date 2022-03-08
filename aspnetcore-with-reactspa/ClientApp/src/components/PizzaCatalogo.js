@@ -59,10 +59,17 @@ export class PizzaCatalogo extends Component{
         this.setState({modalUpdate: false});
     }
 
-    handleClick  (e) {
+    handleClick  () {
+        /*
         console.log('this is:', this);
         console.log('e:', e.target);
-        console.log('e:', e);
+        console.log('e:', e);*/
+  
+        this.setState({ modalUpdate: true });
+    }
+
+    editar  = (item) => {
+        console.log(item);
         this.setState({ modalUpdate: true });
     }
 
@@ -96,10 +103,10 @@ export class PizzaCatalogo extends Component{
                                         <th scope="row">{pizza.id}</th>
                                         <td>{pizza.name}</td>
                                         <td>{pizza.sauce}</td>
-                                        <td><Button color="primary" onClick={this.handleClick} >
+                                        <td><Button color="primary" onClick={() => this.editar(pizza) } >
                                                 Edit
                                             </Button> {' '}
-                                            <Button color="primary" onClick={() => {this.setState({data: this.state.data, modal: !this.state.modal , ide: 1})}} >
+                                            <Button color="primary" >
                                                 X
                                             </Button>
                                         </td>
