@@ -48,7 +48,7 @@ export class PizzaCatalogo extends Component{
              (dataTopping) => {
                  datos.ingredientes = dataTopping;
                  this.setState({data: datos.pizzas,
-                    salsas:datos.salsas, ingredientes: datos.ingredientes});
+                    salsas: datos.salsas, ingredientes: datos.ingredientes, modalUpdate: false});
                     console.log(this.state);
              }
          );
@@ -62,6 +62,7 @@ export class PizzaCatalogo extends Component{
     handleClick  (e) {
         console.log('this is:', this);
         console.log('e:', e.target);
+        console.log('e:', e);
         this.setState({ modalUpdate: true });
     }
 
@@ -113,6 +114,7 @@ export class PizzaCatalogo extends Component{
                         isOpen={this.state.modalUpdate}
                         centered
                         toggle={ this.mitoogle }
+                        
                     >
                         <ModalHeader toggle={this.mitoogle}>
                         Modal title
@@ -128,6 +130,7 @@ export class PizzaCatalogo extends Component{
                                     name="nombre"
                                     placeholder="Nombre Pizza"
                                     
+                                    
                                     />
                                 </FormGroup>
                                 
@@ -140,21 +143,12 @@ export class PizzaCatalogo extends Component{
                                     name="select"
                                     type="select"
                                     >
-                                    <option>
-                                        1
-                                    </option>
-                                    <option>
-                                        2
-                                    </option>
-                                    <option>
-                                        3
-                                    </option>
-                                    <option>
-                                        4
-                                    </option>
-                                    <option>
-                                        5
-                                    </option>
+                                        {
+                                            this.state.salsas.map(
+                                            salsa => 
+                                                <option value={salsa.id}>{salsa.name}</option>
+                                        )
+                                        }
                                     </Input>
                                 </FormGroup>
                                 <FormGroup>
@@ -167,21 +161,12 @@ export class PizzaCatalogo extends Component{
                                     name="selectMulti"
                                     type="select"
                                     >
-                                    <option>
-                                        1
-                                    </option>
-                                    <option>
-                                        2
-                                    </option>
-                                    <option>
-                                        3
-                                    </option>
-                                    <option>
-                                        4
-                                    </option>
-                                    <option>
-                                        5
-                                    </option>
+                                        {
+                                            this.state.ingredientes.map(
+                                            topping => 
+                                                <option value={topping.id}>{topping.name}</option>
+                                        )
+                                        }
                                     </Input>
                                 </FormGroup>
                             </Form>
