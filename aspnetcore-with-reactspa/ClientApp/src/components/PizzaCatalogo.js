@@ -6,7 +6,8 @@ import { Container, Table, Button, Modal, ModalBody,
 export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
-        this.state = {data: [],salsas:[], ingredientes: [],  modalUpdate: false };
+        this.state = {data: [],salsas:[], ingredientes: [], modalInsertar: 0 , modalUpdate: false, 
+            form:{id: 0, name: "", sauce: {}, topping: [] } };
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -56,7 +57,7 @@ export class PizzaCatalogo extends Component{
     }
 
     mitoogle = () => {
-        this.setState({modalUpdate: false});
+        this.setState({modalInsertar: 0});
     }
 
     handleClick  () {
@@ -70,8 +71,23 @@ export class PizzaCatalogo extends Component{
 
     editar  = (item) => {
         console.log(item);
-        this.setState({ modalUpdate: true });
+        this.setState({ modalInsertar: 2 });
     }
+
+    mostrarModalInsertar = () => {
+        this.setState({
+          modalInsertar: 1,
+        });
+      };
+    
+    handleChange = (e) => {
+    this.setState({
+        form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+        },
+    });
+    };
 
     render(){
         return (
@@ -79,6 +95,7 @@ export class PizzaCatalogo extends Component{
                 <Container>
                     <h1 id="tabelLabel" >Catalogo de pizza</h1>
                     <p>Este componente demuestra el uso de Fetch para ir a la API server</p>
+                    <Button color="success" onClick={this.mostrarModalInsertar}>Crear</Button>
                     <Table hover>
                         <thead>
                             <tr>
@@ -118,7 +135,7 @@ export class PizzaCatalogo extends Component{
                         </Table>
                     </Container>
                     <Modal
-                        isOpen={this.state.modalUpdate}
+                        isOpen={this.state.modalInsertar}
                         centered
                         toggle={ this.mitoogle }
                         
@@ -149,11 +166,12 @@ export class PizzaCatalogo extends Component{
                                     id="exampleSelect"
                                     name="select"
                                     type="select"
+                                    onChange={(e) => console.log(e.target.value) }
                                     >
                                         {
                                             this.state.salsas.map(
                                             salsa => 
-                                                <option value={salsa.id}>{salsa.name}</option>
+                                                <option data={salsa} value={salsa}>{salsa.name}</option>
                                         )
                                         }
                                     </Input>
@@ -167,6 +185,7 @@ export class PizzaCatalogo extends Component{
                                     multiple
                                     name="selectMulti"
                                     type="select"
+                                    onChange={(e) => console.log(Array.from(e.target.selectedOptions, option => option.value))}
                                     >
                                         {
                                             this.state.ingredientes.map(
