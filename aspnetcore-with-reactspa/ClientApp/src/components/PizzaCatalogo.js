@@ -6,8 +6,8 @@ import { Container, Table, Button, Modal, ModalBody,
 export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
-        this.state = {data: [],salsas:[], ingredientes: [], modalInsertar: 0 , modalUpdate: false, 
-            form:{id: 0, name: "", sauce: 0, topping: [] } };
+        this.state = {data: [],salsas:[], ingredientes: [], accion: 0,  
+             name: "", salsa: 1, toppings: []  };
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -49,7 +49,7 @@ export class PizzaCatalogo extends Component{
              (dataTopping) => {
                  datos.ingredientes = dataTopping;
                  this.setState({data: datos.pizzas,
-                    salsas: datos.salsas, ingredientes: datos.ingredientes, modalUpdate: false});
+                    salsas: datos.salsas, ingredientes: datos.ingredientes});
                     console.log(this.state);
              }
          );
@@ -57,7 +57,7 @@ export class PizzaCatalogo extends Component{
     }
 
     mitoogle = () => {
-        this.setState({modalInsertar: 0});
+        this.setState({accion: 0});
     }
 
     handleClick  () {
@@ -70,23 +70,25 @@ export class PizzaCatalogo extends Component{
     }
 
     editar  = (item) => {
-        console.log(item);
-        this.setState({ modalInsertar: 2, form: {...this.state.form, sauce: item.id,}, });
+        /*console.log(item);
+        this.setState({ modalInsertar: 2, form: {...this.state.form, sauce: item.id,}, });*/
     }
 
     mostrarModalInsertar = () => {
         this.setState({
-          modalInsertar: 1,
+          accion: 1,
         });
       };
     
     handleChange = (e) => {
-    this.setState({
-        form: {
-        ...this.state.form,
-        [e.target.name]: e.target.value,
-        },
-    });
+        if(e.target.name=='toppings'){
+            const toppi = Array.from(e.target.selectedOptions, option => option.value);
+            console.log(toppi);
+            this.setState({toppings: toppi});
+            console.log(this.state);
+        }else{
+            this.setState({[e.target.name]: e.target.value});
+        }
     };
 
     render(){
@@ -135,7 +137,7 @@ export class PizzaCatalogo extends Component{
                         </Table>
                     </Container>
                     <Modal
-                        isOpen={this.state.modalInsertar}
+                        isOpen={this.state.accion}
                         centered
                         toggle={ this.mitoogle }
                         
@@ -146,46 +148,45 @@ export class PizzaCatalogo extends Component{
                         <ModalBody>
                             <Form>
                                 <FormGroup>
-                                    <Label for="nombre">
-                                        Nombre
+                                    <Label for="name">
+                                        Pizza
                                     </Label>
                                     <Input
-                                    id="nombre"
-                                    name="nombre"
+                                    id="name"
+                                    name="name"
                                     placeholder="Nombre Pizza"
-                                    
-                                    
+                                    onChange={this.handleChange}
                                     />
                                 </FormGroup>
                                 
                                 <FormGroup>
-                                    <Label for="exampleSelect">
-                                    Select
+                                    <Label for="salsa">
+                                    Salsa
                                     </Label>
                                     <Input
-                                    id="exampleSelect"
-                                    name="select"
+                                    id="salsa"
+                                    name="salsa"
                                     type="select"
-                                    onChange={(e) => console.log(e.target.value)}
+                                    onChange={this.handleChange}
                                     >
                                         {
                                             this.state.salsas.map(
                                             salsa => 
-                                                <option value={salsa.id} selected={this.state.form.sauce===salsa.id}>{salsa.name}</option>
+                                                <option value={salsa.id} selected={this.state.salsa===salsa.id}>{salsa.name}</option>
                                         )
                                         }
                                     </Input>
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleSelectMulti">
-                                    Select Multiple
+                                    <Label for="toppings">
+                                    Ingredientes
                                     </Label>
                                     <Input
-                                    id="exampleSelectMulti"
+                                    id="toppings"
                                     multiple
-                                    name="selectMulti"
+                                    name="toppings"
                                     type="select"
-                                    onChange={(e) => console.log(Array.from(e.target.selectedOptions, option => option.value))}
+                                    onChange={this.handleChange}
                                     >
                                         {
                                             this.state.ingredientes.map(
@@ -202,11 +203,11 @@ export class PizzaCatalogo extends Component{
                             color="primary"
                             onClick={function noRefCheck(){}}
                         >
-                            Do Something
+                            Guardar
                         </Button>
                         {' '}
                         <Button onClick={function noRefCheck(){}}>
-                            Cancel
+                            Cancelar
                         </Button>
                         </ModalFooter>
                     </Modal>
