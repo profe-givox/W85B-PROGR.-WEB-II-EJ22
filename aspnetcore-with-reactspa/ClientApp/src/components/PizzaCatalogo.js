@@ -66,7 +66,52 @@ export class PizzaCatalogo extends Component{
         console.log('e:', e.target);
         console.log('e:', e);*/
   
-        this.setState({ modalUpdate: true });
+        //this.setState({ modalUpdate: true });
+        const os = this.state.salsas.filter(salsa => salsa.id==this.state.salsa).pop();
+        const ot = [];
+        const ingre = this.state.ingredientes;
+        console.log(ingre); 
+        this.state.toppings.forEach(
+            it => {
+                const ing = ingre.filter(ele =>  ele.id==it ).pop();
+                ot.push(ing);
+                console.log(ing);
+            }
+        );
+
+        console.log(ot);
+
+        const pizza = {
+            id: 0,
+            name: this.state.name,
+            sauce: os,
+            toppings: ot
+
+        };
+
+        console.log(pizza);
+
+        const options = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pizza)
+        };
+
+        fetch('pizza', options)
+            .then(
+                (response) =>  {return response.status;      }
+            ).then(
+                (code) => {
+                    if(code==201){
+                        this.setState({data: [],salsas:[], ingredientes: [], accion: 0,  
+                            name: "", salsa: 1, toppings: []  });
+                    }
+                }
+            );
+          
+
     }
 
     editar  = (item) => {
@@ -90,6 +135,8 @@ export class PizzaCatalogo extends Component{
             this.setState({[e.target.name]: e.target.value});
         }
     };
+
+
 
     render(){
         return (
@@ -201,7 +248,7 @@ export class PizzaCatalogo extends Component{
                         <ModalFooter>
                         <Button
                             color="primary"
-                            onClick={function noRefCheck(){}}
+                            onClick={this.handleClick}
                         >
                             Guardar
                         </Button>
