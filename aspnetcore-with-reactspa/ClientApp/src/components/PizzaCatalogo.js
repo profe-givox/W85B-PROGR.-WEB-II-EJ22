@@ -7,7 +7,7 @@ export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
         this.state = {data: [],salsas:[], ingredientes: [], modalInsertar: 0 , modalUpdate: false, 
-            form:{id: 0, name: "", sauce: {}, topping: [] } };
+            form:{id: 0, name: "", sauce: 0, topping: [] } };
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -71,7 +71,7 @@ export class PizzaCatalogo extends Component{
 
     editar  = (item) => {
         console.log(item);
-        this.setState({ modalInsertar: 2 });
+        this.setState({ modalInsertar: 2, form: {...this.state.form, sauce: item.id,}, });
     }
 
     mostrarModalInsertar = () => {
@@ -166,12 +166,12 @@ export class PizzaCatalogo extends Component{
                                     id="exampleSelect"
                                     name="select"
                                     type="select"
-                                    onChange={(e) => console.log(e.target.value) }
+                                    onChange={(e) => console.log(e.target.value)}
                                     >
                                         {
                                             this.state.salsas.map(
                                             salsa => 
-                                                <option data={salsa} value={salsa}>{salsa.name}</option>
+                                                <option value={salsa.id} selected={this.state.form.sauce===salsa.id}>{salsa.name}</option>
                                         )
                                         }
                                     </Input>
