@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Redirect} from 'react-router-dom';
 import { Container, Table, Button, Modal, ModalBody, 
     ModalHeader, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 
@@ -105,8 +106,13 @@ export class PizzaCatalogo extends Component{
             ).then(
                 (code) => {
                     if(code==201){
-                        this.setState({data: [],salsas:[], ingredientes: [], accion: 0,  
-                            name: "", salsa: 1, toppings: []  });
+                        console.log(code);
+                        
+                        const  pizzas = Array.from( this.state.data);
+                        pizzas.push({name: pizza.name});
+                        this.componentDidMount();                                        
+                        this.setState({ accion: 0 });
+                        
                     }
                 }
             );

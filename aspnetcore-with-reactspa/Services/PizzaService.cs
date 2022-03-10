@@ -51,8 +51,23 @@ public class PizzaService
 
     public Pizza? Create(Pizza newPizza)
     {
-        _context.Pizzas.Add(newPizza);
+        
+        var pizza = new Pizza  {
+            Id=newPizza.Id,
+            Name=newPizza.Name
+        };
+
+        _context.Pizzas.Add(pizza);
         _context.SaveChanges();
+
+
+        UpdateSauce(pizza.Id, newPizza.Sauce.Id);
+
+        foreach (var item in newPizza.Toppings)
+        {
+            AddTopping(pizza.Id, item.Id);
+        }
+
 
         return newPizza;
     }
