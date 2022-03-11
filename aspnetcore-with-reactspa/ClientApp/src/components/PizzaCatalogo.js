@@ -8,7 +8,7 @@ export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
         this.state = {data: [],salsas:[], ingredientes: [], accion: 0,  
-             name: "", salsa: 1, toppings: []  };
+             name: "", salsa: 1, toppings: [], pizzaE: {}  };
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -121,8 +121,15 @@ export class PizzaCatalogo extends Component{
     }
 
     editar  = (item) => {
-        /*console.log(item);
-        this.setState({ modalInsertar: 2, form: {...this.state.form, sauce: item.id,}, });*/
+        console.log(item);
+        fetch('pizza/'+item.id)
+            .then(response => { return response.json()} )
+                .then(o => {
+                    console.log(o);
+                    this.setState({accion: 2, pizzaE: o})
+                })
+                ;
+
     }
 
     mostrarModalInsertar = () => {
@@ -190,7 +197,7 @@ export class PizzaCatalogo extends Component{
                         </Table>
                     </Container>
                     <Modal
-                        isOpen={this.state.accion}
+                        isOpen={this.state.accion>0 && true}
                         centered
                         toggle={ this.mitoogle }
                         
@@ -209,6 +216,7 @@ export class PizzaCatalogo extends Component{
                                     name="name"
                                     placeholder="Nombre Pizza"
                                     onChange={this.handleChange}
+                                    value={this.state.accion==2 && this.state.pizzaE.name}
                                     />
                                 </FormGroup>
                                 
@@ -225,7 +233,7 @@ export class PizzaCatalogo extends Component{
                                         {
                                             this.state.salsas.map(
                                             salsa => 
-                                                <option value={salsa.id} selected={this.state.salsa===salsa.id}>{salsa.name}</option>
+                                                <option value={salsa.id} selected={this.state.accion==2 && (this.state.pizzaE.id==salsa.id)}>{salsa.name}</option>
                                         )
                                         }
                                     </Input>
@@ -244,7 +252,7 @@ export class PizzaCatalogo extends Component{
                                         {
                                             this.state.ingredientes.map(
                                             topping => 
-                                                <option value={topping.id}>{topping.name}</option>
+                                                <option value={topping.id }>{topping.name}</option>
                                         )
                                         }
                                     </Input>
