@@ -126,7 +126,7 @@ export class PizzaCatalogo extends Component{
             .then(response => { return response.json()} )
                 .then(o => {
                     console.log(o);
-                    this.setState({accion: 2, pizzaE: o})
+                    this.setState({accion: 2, pizzaE: o, name: o.name})
                 })
                 ;
 
@@ -222,7 +222,7 @@ export class PizzaCatalogo extends Component{
                                     name="name"
                                     placeholder="Nombre Pizza"
                                     onChange={this.handleChange}
-                                    value={this.state.accion==2 && this.state.pizzaE.name}
+                                    value={this.state.name}
                                     />
                                 </FormGroup>
                                 
