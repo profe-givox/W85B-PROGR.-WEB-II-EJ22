@@ -149,6 +149,12 @@ export class PizzaCatalogo extends Component{
         }
     };
 
+    marcarIngre = (ingre) => {
+        const ingres =  this.state.pizzaE.toppings;
+        const hayIngre = ingres.filter( (ing) => ing.id==ingre.id)
+        return hayIngre.length>0;
+    }
+
 
 
     render(){
@@ -233,7 +239,7 @@ export class PizzaCatalogo extends Component{
                                         {
                                             this.state.salsas.map(
                                             salsa => 
-                                                <option value={salsa.id} selected={this.state.accion==2 && (this.state.pizzaE.id==salsa.id)}>{salsa.name}</option>
+                                                <option value={salsa.id} selected={this.state.accion===2 && this.state.pizzaE.sauce.id===salsa.id}>{salsa.name}</option>
                                         )
                                         }
                                     </Input>
@@ -252,7 +258,7 @@ export class PizzaCatalogo extends Component{
                                         {
                                             this.state.ingredientes.map(
                                             topping => 
-                                                <option value={topping.id }>{topping.name}</option>
+                                                <option value={topping.id }  selected={ this.state.accion===2 && this.marcarIngre(topping) } >{topping.name}</option>
                                         )
                                         }
                                     </Input>
