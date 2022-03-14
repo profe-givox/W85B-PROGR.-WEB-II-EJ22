@@ -58,7 +58,7 @@ export class PizzaCatalogo extends Component{
     }
 
     mitoogle = () => {
-        this.setState({accion: 0});
+        this.setState({accion: 0, name: ''});
     }
 
     handleClick  () {
