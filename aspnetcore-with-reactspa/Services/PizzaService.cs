@@ -41,6 +41,7 @@ public class PizzaService
 
     public Pizza? GetById(int id)
     {
+
          return _context.Pizzas
             .Include(p => p.Toppings)
             .Include(p => p.Sauce)
@@ -70,6 +71,31 @@ public class PizzaService
 
 
         return newPizza;
+    }
+
+    public void update(Pizza pizzaUpdate){
+                
+        var piiza =
+                _context.Pizzas
+        .Include(p => p.Toppings)
+        .Include(p => p.Sauce)
+        .SingleOrDefault(p => p.Id ==  pizzaUpdate.Id);
+
+        foreach( Topping t in piiza.Toppings.ToList()){
+            piiza.Toppings.Remove(t);    
+        }
+        
+        _context.Pizzas.Update(piiza);
+        
+        //probar esta opcion
+        //_context.Pizzas.Update(pizzaUpdate);
+        
+        _context.SaveChanges();
+
+
+
+
+
     }
 
     public void AddTopping(int PizzaId, int ToppingId)
