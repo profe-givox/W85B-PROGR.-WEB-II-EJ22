@@ -84,18 +84,17 @@ public class PizzaService
         foreach( Topping t in piiza.Toppings.ToList()){
             piiza.Toppings.Remove(t);    
         }
+
+        if(pizzaUpdate.Sauce.Id != piiza.Sauce.Id)
+            piiza.Sauce = pizzaUpdate.Sauce;
         
         _context.Pizzas.Update(piiza);
-        
-        //probar esta opcion
-        //_context.Pizzas.Update(pizzaUpdate);
-        
         _context.SaveChanges();
 
-
-
-
-
+        pizzaUpdate.Toppings.ToList().ForEach(
+            item => AddTopping(pizzaUpdate.Id, item.Id)
+        );
+        
     }
 
     public void AddTopping(int PizzaId, int ToppingId)

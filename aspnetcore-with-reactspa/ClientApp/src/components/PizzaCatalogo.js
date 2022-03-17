@@ -91,7 +91,49 @@ export class PizzaCatalogo extends Component{
         };
 
         console.log(pizza);
+        
+        switch(this.state.accion){
+            case 1:
+                this.create(pizza);
+                break;
 
+            case 2:
+                this.edit(pizza);
+                break ;
+        }
+
+    }
+
+    edit = (pizza) => {
+    
+        pizza.id = this.state.pizzaE.id;
+
+        const options = {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pizza)
+        };
+
+        fetch('pizza', options)
+            .then(
+                (response) =>  {return response.status;      }
+            ).then(
+                (code) => {
+                    if(code==204){
+                        console.log(code);
+                        
+                        this.componentDidMount();                                        
+                        this.setState({ accion: 0 });
+                        
+                    }
+                }
+            );
+        
+    }
+
+    create = (pizza) => {
         const options = {
             method: "POST",
             headers: {
@@ -116,8 +158,7 @@ export class PizzaCatalogo extends Component{
                     }
                 }
             );
-          
-
+        
     }
 
     editar  = (item) => {

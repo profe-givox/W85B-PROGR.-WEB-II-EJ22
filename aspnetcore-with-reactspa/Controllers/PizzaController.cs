@@ -59,6 +59,13 @@ public class PizzaController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = pizza!.Id }, pizza);
     }
 
+    [HttpPut]
+    public IActionResult Update(Pizza pizzaEditar){
+        _service.update(pizzaEditar);
+
+        return NoContent();
+    }
+
     [HttpPut("{id}/addtopping")]
     public IActionResult AddTopping(int id, int toppingId)
     {
