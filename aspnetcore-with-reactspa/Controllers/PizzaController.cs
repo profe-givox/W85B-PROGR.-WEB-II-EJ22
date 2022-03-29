@@ -2,8 +2,11 @@ using aspnetcore_with_reactspa.Services;
 using aspnetcore_with_reactspa.Models;
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace aspnetcore_with_reactspa.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class PizzaController : ControllerBase
@@ -52,6 +55,7 @@ public class PizzaController : ControllerBase
     }
 
 
+    [Authorize]
     [HttpPost]
     public IActionResult Create(Pizza newPizza)
     {

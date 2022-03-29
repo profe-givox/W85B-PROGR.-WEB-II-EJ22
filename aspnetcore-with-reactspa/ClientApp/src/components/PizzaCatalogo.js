@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Redirect} from 'react-router-dom';
 import { Container, Table, Button, Modal, ModalBody, 
     ModalHeader, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
-
+import  axios from "axios";
 
 export class PizzaCatalogo extends Component{
     constructor(props){
@@ -173,6 +173,14 @@ export class PizzaCatalogo extends Component{
 
     }
 
+    delete = async (id) => {
+        const response = await axios.delete("pizza/"+id);
+        if (response.status==200 || response.status==204){
+            this.componentDidMount();                                        
+            this.setState({ accion: 0 });
+        } 
+    }
+
     mostrarModalInsertar = () => {
         this.setState({
           accion: 1,
@@ -232,7 +240,7 @@ export class PizzaCatalogo extends Component{
                                         <td><Button color="primary" onClick={() => this.editar(pizza) } >
                                                 Edit
                                             </Button> {' '}
-                                            <Button color="primary" >
+                                            <Button color="primary" onClick={() => this.delete(pizza.id)} >
                                                 X
                                             </Button>
                                         </td>
