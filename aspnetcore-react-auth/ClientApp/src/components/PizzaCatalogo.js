@@ -3,6 +3,8 @@ import {Redirect} from 'react-router-dom';
 import { Container, Table, Button, Modal, ModalBody, 
     ModalHeader, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import  axios from "axios";
+import authService from './api-authorization/AuthorizeService'
+
 
 export class PizzaCatalogo extends Component{
     constructor(props){
@@ -20,7 +22,11 @@ export class PizzaCatalogo extends Component{
             ingredientes: []
         };
 
-         fetch('pizza').then((response )=>{
+        const token = await authService.getAccessToken();
+        const opcines = {
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+          }
+         fetch('pizza', opcines).then((response )=>{
               return response.json();   
          }).then(
              (dataApi) => {

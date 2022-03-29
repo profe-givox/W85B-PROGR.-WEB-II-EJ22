@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using aspnetcore_react_auth.Data;
 using aspnetcore_react_auth.Models;
+using aspnetcore_react_auth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<PizzaService>();
 
 var app = builder.Build();
 
@@ -53,5 +56,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.MapFallbackToFile("index.html");;
+
+app.CreateDbIfNotExists();
 
 app.Run();

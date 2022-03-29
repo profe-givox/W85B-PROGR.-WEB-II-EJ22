@@ -1,9 +1,11 @@
 using aspnetcore_react_auth.Services;
 using aspnetcore_react_auth.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetcore_react_auth.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class PizzaController : ControllerBase
