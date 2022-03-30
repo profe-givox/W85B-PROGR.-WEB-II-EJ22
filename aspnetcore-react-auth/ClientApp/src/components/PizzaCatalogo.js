@@ -22,44 +22,47 @@ export class PizzaCatalogo extends Component{
             ingredientes: []
         };
 
-        const token = await authService.getAccessToken();
-        const opcines = {
-                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-          }
-         fetch('pizza', opcines).then((response )=>{
-              return response.json();   
-         }).then(
-             (dataApi) => {
-                datos.pizzas = dataApi;
-                return fetch('pizza/sauce');
-                /*
-                console.log(dataApi); 
-                
-                this.setState({data: dataApi}
-                    );
-                */
+        authService.getAccessToken().then(
+            (token) => {
+                const opcines = {
+                    headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
                 }
-                
-               
-         ).then(
-             (response) => {
-                 return response.json();
-             }
-         ).then(
-             (dataSalsa) => {
-                 datos.salsas = dataSalsa;
-                 return fetch('pizza/topping');
-             }
-         ).then(
-             (response) => {return  response.json()}
-         ).then(
-             (dataTopping) => {
-                 datos.ingredientes = dataTopping;
-                 this.setState({data: datos.pizzas,
-                    salsas: datos.salsas, ingredientes: datos.ingredientes});
-                    console.log(this.state);
-             }
-         );
+                fetch('pizza', opcines).then((response )=>{
+                    return response.json();   
+               }).then(
+                   (dataApi) => {
+                      datos.pizzas = dataApi;
+                      return fetch('pizza/sauce', opcines);
+                      /*
+                      console.log(dataApi); 
+                      
+                      this.setState({data: dataApi}
+                          );
+                      */
+                      }
+                      
+                     
+               ).then(
+                   (response) => {
+                       return response.json();
+                   }
+               ).then(
+                   (dataSalsa) => {
+                       datos.salsas = dataSalsa;
+                       return fetch('pizza/topping', opcines);
+                   }
+               ).then(
+                   (response) => {return  response.json()}
+               ).then(
+                   (dataTopping) => {
+                       datos.ingredientes = dataTopping;
+                       this.setState({data: datos.pizzas,
+                          salsas: datos.salsas, ingredientes: datos.ingredientes});
+                          console.log(this.state);
+                   }
+               );
+            }
+        );
         
     }
 
@@ -169,14 +172,20 @@ export class PizzaCatalogo extends Component{
 
     editar  = (item) => {
         console.log(item);
-        fetch('pizza/'+item.id)
-            .then(response => { return response.json()} )
-                .then(o => {
-                    console.log(o);
-                    this.setState({accion: 2, pizzaE: o, name: o.name})
-                })
-                ;
-
+        authService.getAccessToken().then(
+            (token) =>{
+                const opcines = {
+                    headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+               };
+               fetch('pizza/'+item.id, opcines)
+                .then(response => { return response.json()} )
+                    .then(o => {
+                        console.log(o);
+                        this.setState({accion: 2, pizzaE: o, name: o.name})
+                    })
+                    ;
+            }
+        );
     }
 
     delete = async (id) => {
