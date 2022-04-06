@@ -2,6 +2,8 @@ using aspnetcore_react_auth.Services;
 using aspnetcore_react_auth.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace aspnetcore_react_auth.Controllers;
 
@@ -11,10 +13,14 @@ namespace aspnetcore_react_auth.Controllers;
 public class PizzaController : ControllerBase
 {
     PizzaService _service;
+    private readonly UserManager<ApplicationUser> _userManager;
+
     
-    public PizzaController(PizzaService service)
+    public PizzaController(PizzaService service, 
+        UserManager<ApplicationUser> userManager)
     {
         _service = service;
+        _userManager = userManager;
     }
 
     //localhost/pizza/sauce
@@ -38,6 +44,23 @@ public class PizzaController : ControllerBase
         return _service.GetAll();
     }
 
+
+    [HttpGet ]
+    [Route("withauth")]
+    public  IEnumerable<Pizza> GetAllByUser()
+    {
+        var items =  Enumerable.Empty<Pizza>();
+        
+            var currentUser = _userManager.GetUserId(User);
+            if (currentUser == null) throw new Exception("No autorizado");
+
+            
+            items =  _service
+                .GetAllByUser(currentUser);
+            
+            return items;   
+    }
+
     [HttpGet("{id}")]
     public ActionResult<Pizza> GetById(int id)
     {
@@ -57,6 +80,11 @@ public class PizzaController : ControllerBase
     [HttpPost]
     public IActionResult Create(Pizza newPizza)
     {
+        /*
+        var currentUser = await _userManager.GetUserAsync(User);
+        if (currentUser == null) return  Challenge();
+        */
+
         var pizza = _service.Create(newPizza);
         return CreatedAtAction(nameof(GetById), new { id = pizza!.Id }, pizza);
     }

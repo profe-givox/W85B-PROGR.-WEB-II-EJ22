@@ -1,16 +1,21 @@
 using aspnetcore_react_auth.Models;
 using aspnetcore_react_auth.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetcore_react_auth.Services;
 
 public class PizzaService
 {
     private readonly ApplicationDbContext _context;
+    
 
-    public PizzaService(ApplicationDbContext context)
+    public PizzaService(ApplicationDbContext context
+                        )
     {
         _context = context;
+    
     }
 
     public IEnumerable<Topping> ToppingGetAll()
@@ -37,7 +42,13 @@ public class PizzaService
 
     }
 
+    public IEnumerable<Pizza>  GetAllByUser(String currentUser )
+    {
+            return  _context.Pizzas
+                .Where( x => x.UserId == currentUser )
+                .ToArray() ;
 
+    }
 
     public Pizza? GetById(int id)
     {
@@ -51,6 +62,29 @@ public class PizzaService
     }
 
     public Pizza? Create(Pizza newPizza)
+    {
+        
+        var pizza = new Pizza  {
+            Id=newPizza.Id,
+            Name=newPizza.Name
+        };
+
+        _context.Pizzas.Add(pizza);
+        _context.SaveChanges();
+
+
+        UpdateSauce(pizza.Id, newPizza.Sauce.Id);
+
+        foreach (var item in newPizza.Toppings)
+        {
+            AddTopping(pizza.Id, item.Id);
+        }
+
+
+        return newPizza;
+    }
+
+    public Pizza? Create(Pizza newPizza, ApplicationUser currentUser)
     {
         
         var pizza = new Pizza  {

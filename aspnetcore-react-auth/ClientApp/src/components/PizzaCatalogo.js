@@ -27,7 +27,7 @@ export class PizzaCatalogo extends Component{
                 const opcines = {
                     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
                 }
-                fetch('pizza', opcines).then((response )=>{
+                fetch('pizza/withauth', opcines).then((response )=>{
                     return response.json();   
                }).then(
                    (dataApi) => {

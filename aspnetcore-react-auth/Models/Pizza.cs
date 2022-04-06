@@ -13,4 +13,7 @@ public class Pizza
     public Sauce? Sauce { get; set; }
     
     public ICollection<Topping>? Toppings { get; set; }
+
+    public string UserId { get; set; }
+
 }
