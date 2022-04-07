@@ -3,7 +3,7 @@ using aspnetcore_react_auth.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-
+using System.Security.Claims;
 
 namespace aspnetcore_react_auth.Controllers;
 
@@ -49,14 +49,18 @@ public class PizzaController : ControllerBase
     [Route("withauth")]
     public  IEnumerable<Pizza> GetAllByUser()
     {
+    
+
         var items =  Enumerable.Empty<Pizza>();
+
+        string userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
         
-            var currentUser = _userManager.GetUserId(User);
-            if (currentUser == null) throw new Exception("No autorizado");
+
+            if (userId == null) throw new Exception("No autorizado");
 
             
             items =  _service
-                .GetAllByUser(currentUser);
+                .GetAllByUser(userId);
             
             return items;   
     }
