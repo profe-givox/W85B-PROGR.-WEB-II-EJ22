@@ -53,12 +53,11 @@ public class PizzaController : ControllerBase
 
         var items =  Enumerable.Empty<Pizza>();
 
-        string userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+        string userId = HttpContext.User.Claims.FirstOrDefault
+                    (x => x.Type == ClaimTypes.NameIdentifier).Value;
         
-
             if (userId == null) throw new Exception("No autorizado");
-
-            
+    
             items =  _service
                 .GetAllByUser(userId);
             

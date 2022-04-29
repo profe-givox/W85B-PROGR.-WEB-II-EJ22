@@ -24,6 +24,7 @@ export class PizzaCatalogo extends Component{
 
         authService.getAccessToken().then(
             (token) => {
+                console.log(token);
                 const opcines = {
                     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
                 }
