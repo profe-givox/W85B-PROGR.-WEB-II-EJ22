@@ -57,7 +57,13 @@ export class FetchData extends Component {
     const response = await fetch('weatherforecast', {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    console.log(response);
+    if(response.status!=403){
+      const data = await response.json();
+      this.setState({ forecasts: data, loading: false });  
+    }else {
+      console.log('Sin autorizacion');
+    }
+    
   }
 }

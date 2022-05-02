@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using aspnetcore_react_auth.Data;
 using aspnetcore_react_auth.Models;
 using aspnetcore_react_auth.Services;
+using IdentityModel;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +22,34 @@ builder.Services.AddDefaultIdentity<ApplicationUser>
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(
+        x => {
+            x.IdentityResources.Add(new Duende.IdentityServer.Models.IdentityResource(
+                "roles", "Roles", new []{JwtClaimTypes.Role, ClaimTypes.Role}
+            ));
+            foreach(var c in x.Clients)
+            {
+                c.AllowedScopes.Add("roles");
+            }
+            foreach (var a in x.ApiResources)
+            {
+                a.UserClaims.Add(JwtClaimTypes.Role);
+            }
+        }
+    )
+    // .AddProfileService<ProfileService>()
+    ;
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+builder.Services.AddAuthorization(options =>
+{
+     options.AddPolicy("RequireAdminRole", policy =>
+     {
+          policy.RequireClaim(ClaimTypes.Role, "ADMINISTRADOR");
+     });
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -36,7 +62,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
+    //context.Database.Migrate();
     // requires using Microsoft.Extensions.Configuration;
     // Set password with the Secret Manager tool.
     // dotnet user-secrets set SeedUserPW <pw>

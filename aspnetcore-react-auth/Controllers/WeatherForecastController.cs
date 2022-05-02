@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetcore_react_auth.Controllers;
 
-[Authorize]
+
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
@@ -20,6 +20,8 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
+    [Authorize(Policy = "RequireAdminRole")]
+    // [Authorize(Roles = "ADMINISTRADOR")]
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
     {
