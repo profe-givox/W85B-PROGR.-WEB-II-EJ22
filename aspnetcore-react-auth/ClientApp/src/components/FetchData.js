@@ -10,7 +10,17 @@ export class FetchData extends Component {
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+
+    authService.getUser().then((user) => {
+      console.log(user);
+      if( authService.isAdmin(user)){
+        this.populateWeatherData();
+      }else{
+        console.log("El usuario no es administrador")
+      }
+    } );
+
+    
   }
 
   static renderForecastsTable(forecasts) {

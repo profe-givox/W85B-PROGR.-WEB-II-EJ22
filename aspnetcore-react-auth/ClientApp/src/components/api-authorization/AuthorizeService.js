@@ -11,14 +11,16 @@ export class AuthorizeService {
     // If you want to enable pop up authentication simply set this flag to false.
     _popUpDisabled = true;
 
+    
     isAdmin(user) {
-        return this.isInAnyRole(user, ["ADMINISTRADOR"]);
+        return this.isInAnyRole(user, ["ADMINISTRADOR", "GERENTE"]);
     }
     
-      isInAnyRole(user, requiredAnyRoles) {
+    isInAnyRole(user, requiredAnyRoles) {
         var authorized = false;
         if (user) {
-          var userRoles = this.ensureArray(user.profile.role);
+          var userRoles = this.ensureArray(user.role);
+          console.log(userRoles);
           requiredAnyRoles.forEach(role => {
             if (userRoles.indexOf(role) > -1) {
               authorized = true;
@@ -26,15 +28,16 @@ export class AuthorizeService {
           });
         }
         return authorized;
-      }
+    }
     
-      ensureArray(value) {
+    ensureArray(value) {
         if (!Array.isArray(value)) {
-          return [value];
+            return [value];
         }
         return value;
-      }
+    }
 
+     
     async isAuthenticated() {
         const user = await this.getUser();
         return !!user;

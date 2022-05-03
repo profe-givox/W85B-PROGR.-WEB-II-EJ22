@@ -10,7 +10,7 @@ export class PizzaCatalogo extends Component{
     constructor(props){
         super(props);
         this.state = {data: [],salsas:[], ingredientes: [], accion: 0,  
-             name: "", salsa: 1, toppings: [], pizzaE: {}  };
+             name: "", salsa: 1, toppings: [], pizzaE: {}, isUserValid: false  };
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -21,6 +21,15 @@ export class PizzaCatalogo extends Component{
             salsas: [],
             ingredientes: []
         };
+        
+        authService.getUser().then(
+            (u) => { console.log(u);
+                const valo = authService.isAdmin (u);
+                console.log(valo);
+                this.setState({isUserValid: valo})
+            }
+
+        );
 
         authService.getAccessToken().then(
             (token) => {
@@ -228,7 +237,7 @@ export class PizzaCatalogo extends Component{
                 <Container>
                     <h1 id="tabelLabel" >Catalogo de pizza</h1>
                     <p>Este componente demuestra el uso de Fetch para ir a la API server</p>
-                    <Button color="success" onClick={this.mostrarModalInsertar}>Crear</Button>
+                    {  this.state.isUserValid &&  <Button color="success" onClick={this.mostrarModalInsertar}>Crear</Button>  }
                     <Table hover>
                         <thead>
                             <tr>
