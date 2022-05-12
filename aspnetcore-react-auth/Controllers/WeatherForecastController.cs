@@ -21,7 +21,6 @@ public class WeatherForecastController : ControllerBase
     }
 
     [Authorize(Policy = "RequireAdminRole")]
-    // [Authorize(Roles = "ADMINISTRADOR")]
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
     {
